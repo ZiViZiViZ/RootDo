@@ -1,6 +1,6 @@
-CFLAGS = -Wall -Wextra -Werror -Wl,-z,now -D_FORTIFY_SOURCE=2
-CFLAGS_RELEASE = ${CFLAGS} -O2 -s
-CFLAGS_DEBUG = ${CFLAGS} -O0 -g -fsanitize=leak,undefined
+CFLAGS = -Wall -Wextra -Werror -Wl,-z,now
+CFLAGS_RELEASE = ${CFLAGS} -O2 -s -D_FORTIFY_SOURCE=2
+CFLAGS_DEBUG = ${CFLAGS} -O0 -g -fsanitize=undefined
 LIBS = -lbsd -lcrypt
 CC = gcc
 

@@ -77,7 +77,7 @@ int ensuredir() {
 	return 0;
 }
 
-void setsession(int pid, unsigned int ts_ttl) {
+void setsession(int pid, unsigned int ts_ttl, int ruid) {
 	unsigned long long startts;
 	char path[1024], ts_str[32];
 
@@ -87,7 +87,7 @@ void setsession(int pid, unsigned int ts_ttl) {
 	if (ensuredir() < 0 || getpstartts(pid, &startts) < 0)
 		return;
 
-	snprintf(path, sizeof(path), "/run/rdo/%d-%llu", pid, startts);
+	snprintf(path, sizeof(path), "/run/rdo/%d-%d-%llu", ruid, pid, startts);
 
 	int fd = open(path, O_CREAT | O_EXCL | O_WRONLY, 0700);
 	if (fd < 0) {
@@ -108,7 +108,7 @@ void setsession(int pid, unsigned int ts_ttl) {
 	return;
 }
 
-int getsession(int pid, unsigned int ts_ttl) {
+int getsession(int pid, unsigned int ts_ttl, int ruid) {
 	unsigned long long startts, current;
 	char path[1024], ts_str[32];
 
@@ -118,7 +118,7 @@ int getsession(int pid, unsigned int ts_ttl) {
 	if (ensuredir() < 0 || getpstartts(pid, &startts) < 0)
 		return -1;
 
-	snprintf(path, sizeof(path), "/run/rdo/%d-%llu", pid, startts);
+	snprintf(path, sizeof(path), "/run/rdo/%d-%d-%llu", ruid, pid, startts);
 
 	int fd = open(path, O_RDONLY);
 	if (fd < 0) {
